@@ -14,7 +14,7 @@
 (function(window) {
 
 	var arcSlider = {
-		
+
 		options: {
 			max: 100,
 			min: 0,
@@ -93,7 +93,11 @@
 			x: centerX + (radius * Math.cos(angleInRadians)),
 			y: centerY + (radius * Math.sin(angleInRadians))
 		  };
-		},					
+		},		
+
+		_distanceOfTwoPoints : function(p1,p2) {
+			return Math.abs(Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y,2)));
+		},
 				
 		_setOptions : function(opts) {
 			if (opts) {
@@ -110,17 +114,24 @@
 		/*
 		* Event functions
 		*/
-		_bindPathClickFunction : function(element) {
-			element.addEventListener('mouseup',function() {
-				if (this._ismousedown) {
-					// do something while mouse is down
-					alert(element.getTotalLength());
+		_bindPathClickFunction : function(element) {	
+			var _self = this;
+			element.addEventListener('mouseup',function(e) {
+				// the mouse stop event function should be here
+				if (_self._ismousedown) {					
+					var clickDistance = _self._distanceOfTwoPoints(_self._center,{x:e.offsetX,y:e.offsetY});
+					var angle = (180/Math.PI)*Math.acos((e.offsetX - _self._center.x)/clickDistance) - 90;
+					if (angle < 0) angle = 360 + angle;
+					var ratio = angle/360;
+					console.log(angle);
 				}
-				this._ismousedown = false;
+				
+				// reset mouse flag
+				_self._ismousedown = false;
 			});
 			
 			element.addEventListener('mousedown',function() {
-				this._ismousedown = true;
+				_self._ismousedown = true;
 			});
 		},		
 		
