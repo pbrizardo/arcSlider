@@ -122,7 +122,28 @@
 					var clickDistance = _self._distanceOfTwoPoints(_self._center,{x:e.offsetX,y:e.offsetY});
 					var angle = (180/Math.PI)*Math.acos((e.offsetX - _self._center.x)/clickDistance) - 90;
 					if (angle < 0) angle = 360 + angle;
+					angle = 360 - angle;
 					var ratio = angle/360;
+					
+					var start = _self._polarToCartesian(_self._center.x, _self._center.y, _self.options.radius, angle);
+					var end   = _self._polarToCartesian(_self._center.x, _self._center.y, _self.options.radius, (_self.options.angle/2));
+					
+					var arcSweep = angle - (_self.options.angle/2) <= 180 ? "0" : "1";
+					
+					var d = [
+						"M", start.x, start.y, 
+						"A", _self.options.radius, _self.options.radius, 0, arcSweep, 0, end.x, end.y
+					].join(" ");
+					
+					var path = d;	
+					var pathElement = _self._createPathDOMElement(path,_self.options.baseColor);
+					_self._bindPathClickFunction(pathElement);
+					
+					var svgElement = _self._createSVGDOMElement(_self._width, _self._height);
+					
+					svgElement.appendChild(pathElement);
+					_self._container.appendChild(svgElement);
+					
 					console.log(angle);
 				}
 				
