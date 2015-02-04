@@ -62,6 +62,19 @@
 			
 			return path1 + " " + path2;				
 		},
+
+		_buildFillArc : function(x, y, radius, startAngle, endAngle) {
+			var a1start = startAngle;
+			var a1end   = (endAngle < startAngle) ? 0 : endAngle;
+			
+			var path = this._describeArc(x,y,radius,a1start,a1end);
+
+			if (endAngle < startAngle) {
+				path = path + " " + this._describeArc(x,y,radius,0,endAngle);
+			}
+
+			return path;
+		},
 		
 		_createPathDOMElement : function(path,color) {
 			var element = document.createElementNS(this._namespace,"path");
@@ -116,44 +129,44 @@
 		*/
 		_bindPathClickFunction : function(element) {	
 			var _self = this;
-			element.addEventListener('mouseup',function(e) {
+			element.addEventListener('click',function(e) {
 				// the mouse stop event function should be here
-				if (_self._ismousedown) {					
+				//if (_self._ismousedown) {					
 					var clickDistance = _self._distanceOfTwoPoints(_self._center,{x:e.offsetX,y:e.offsetY});
-					var angle = (180/Math.PI)*Math.acos((e.offsetX - _self._center.x)/clickDistance) - 90;
+					var angle = (180/Math.PI)*Math.atan2((e.offsetY - _self._center.y),(e.offsetX - _self._center.x));
+					angle = angle + 90;
 					if (angle < 0) angle = 360 + angle;
-					angle = 360 - angle;
-					var ratio = angle/360;
+					//angle = 360 - angle;
+
+					console.log(angle);
 					
-					var start = _self._polarToCartesian(_self._center.x, _self._center.y, _self.options.radius, angle);
-					var end   = _self._polarToCartesian(_self._center.x, _self._center.y, _self.options.radius, (_self.options.angle/2));
-					
-					var arcSweep = angle - (_self.options.angle/2) <= 180 ? "0" : "1";
-					
-					var d = [
-						"M", start.x, start.y, 
-						"A", _self.options.radius, _self.options.radius, 0, arcSweep, 0, end.x, end.y
-					].join(" ");
-					
-					var path = d;	
-					var pathElement = _self._createPathDOMElement(path,_self.options.baseColor);
+					// calc total arc angle
+					var arc = 0;
+					if (angle < _self.options.angle) {
+						arc = 360 - _self.options.angle + arc;
+					} else {
+						arc = angle - _self.options.angle;
+					}
+
+					var path = _self._buildFillArc(_self._center.x, _self._center.y, _self.options.radius, 360 - (_self.options.angle/2), angle);	
+					if (_self.subpath) _self.subpath.parentNode.removeChild(_self.subpath);					
+					var pathElement = _self.subpath = _self._createPathDOMElement(path,"#000000");
 					_self._bindPathClickFunction(pathElement);
 					
-					var svgElement = _self._createSVGDOMElement(_self._width, _self._height);
+					//var svgElement = _self._createSVGDOMElement(_self._width, _self._height);
 					
-					svgElement.appendChild(pathElement);
-					_self._container.appendChild(svgElement);
-					
-					console.log(angle);
-				}
+					_self._container.childNodes[0].appendChild(pathElement);
+					//_self._container.appendChild(svgElement);
+										
+				
 				
 				// reset mouse flag
-				_self._ismousedown = false;
+				//_self._ismousedown = false;
 			});
 			
-			element.addEventListener('mousedown',function() {
-				_self._ismousedown = true;
-			});
+			// element.addEventListener('mousedown',function() {
+			// 	_self._ismousedown = true;
+			// });
 		},		
 		
 		/*
