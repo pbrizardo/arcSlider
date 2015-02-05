@@ -54,10 +54,10 @@
 		},
 		
 		_buildMainArc : function(x, y, radius, angle) {
-			var a1 = 360 - (angle/2);
+			var a1 = this._startAngle = 360 - (angle/2);
 			var path1 = this._describeArc(x,y,radius,a1,0);
 			
-			var a2 = angle/2;
+			var a2 = this._endAngle = angle/2;
 			var path2 = this._describeArc(x,y,radius,0,a2);
 			
 			return path1 + " " + path2;				
@@ -81,6 +81,7 @@
 			element.setAttribute("stroke",color);
 			element.setAttribute("stroke-width",this.options.thickness);
 			element.setAttribute("fill","none");
+			//element.setAttribute("vector-effect","non-scaling-stroke");
 			element.setAttribute("d",path);
 			
 			return element;
@@ -88,9 +89,8 @@
 		
 		_createSVGDOMElement : function(width, height) {
 			var element = document.createElementNS(this._namespace,"svg");
-			element.setAttribute("width",width);
-			element.setAttribute("height",height);
-			
+			element.setAttribute("viewBox","0 0 " + width + " " + height);
+			//element.setAttribute("preserveAspectRatio", "xMinYMin meet");
 			return element;
 		},
 		
@@ -123,6 +123,47 @@
 			
 			return this.options;
 		},
+
+		_getCenter : function() {
+			// var width = this._container.innerWidth || this._container.clientWidth;
+			// var height = this._container.innerHeight || this._container.clientHeight;
+			// var w = height < width ? height : width;
+			// w = w/2;
+			// return {x:w, y:w};
+
+			return this._center;
+		},
+
+		_draw : function() {
+
+
+			// calc dimensions
+			var width = this._container.innerWidth || this._container.clientWidth;
+			var height = this._container.innerHeight || this._container.clientHeight;
+			this._width = height < width ? height : width;
+			this._height = this._width;
+			var c = this._width/2;
+			var center = this._center = {x:c,y:c};
+
+			// set options
+			this.options.radius = center.x - options.thickness;
+			
+			// build base arc
+			var pathElement = this._createPathDOMElement(this.basePath,options.baseColor);
+			this._bindPathClickFunction(pathElement);
+			if (this._subPath) {
+				var traceElement = this._createPathDOMElement(this._subPath,"#000000");
+				this._bindPathClickFunction(traceElement);
+			}
+			
+			var svgContainer = this._container.childNodes[0];
+			for (var i in this._container.childNodes) {
+				svgContainer.childNodes[i].parentNode.removeChild(svgContainer.childNodes[i]);
+			};
+			
+			svgContainer.appendChild(pathElement);
+			svgContainer.appendChild(traceElement);
+		},
 		
 		/*
 		* Event functions
@@ -132,25 +173,33 @@
 			element.addEventListener('click',function(e) {
 				// the mouse stop event function should be here
 				//if (_self._ismousedown) {					
-					var clickDistance = _self._distanceOfTwoPoints(_self._center,{x:e.offsetX,y:e.offsetY});
-					var angle = (180/Math.PI)*Math.atan2((e.offsetY - _self._center.y),(e.offsetX - _self._center.x));
+
+					var center =  _self._getCenter();
+					var clickDistance = _self._distanceOfTwoPoints(center,{x:e.offsetX,y:e.offsetY});
+					var angle = (180/Math.PI)*Math.atan2((e.offsetY - center.y),(e.offsetX - center.x));
 					angle = angle + 90;
 					if (angle < 0) angle = 360 + angle;
 					//angle = 360 - angle;
 
+					console.log({x:e.offsetX,y:e.offsetY});
+					console.log(center);
 					console.log(angle);
 					
 					// calc total arc angle
 					var arc = 0;
 					if (angle < _self.options.angle) {
 						arc = 360 - _self.options.angle + arc;
+					} else if (angle > _self.endAngle) {
+
 					} else {
 						arc = angle - _self.options.angle;
 					}
 
-					var path = _self._buildFillArc(_self._center.x, _self._center.y, _self.options.radius, 360 - (_self.options.angle/2), angle);	
-					if (_self.subpath) _self.subpath.parentNode.removeChild(_self.subpath);					
-					var pathElement = _self.subpath = _self._createPathDOMElement(path,"#000000");
+					if (angle > _self.endAngle) angle = _self.endAngle;
+
+					var path = _self.basePath = _self._buildFillArc(center.x, center.y, _self.options.radius, 360 - (_self.options.angle/2), angle);	
+					if (_self._subpath) _self._subpath.parentNode.removeChild(_self.subpath);					
+					var pathElement = _self._subpath = _self._createPathDOMElement(path,"#000000");
 					_self._bindPathClickFunction(pathElement);
 					
 					//var svgElement = _self._createSVGDOMElement(_self._width, _self._height);
@@ -184,23 +233,26 @@
 			this._namespace = "http://www.w3.org/2000/svg";
 			
 			// calc dimensions
-			this._width = obj.innerWidth || obj.clientWidth;
-			this._height = obj.innerHeight || obj.clientHeight;
-			var center = this._center = { x : this._width/2, y : this._height/2 };		
+			var width = obj.innerWidth || obj.clientWidth;
+			var height = obj.innerHeight || obj.clientHeight;
+			this._width = height < width ? height : width;
+			this._height = this._width;
+			var c = this._width/2;
+			var center = this._center = {x:c,y:c};
 
 			// set options
 			var options = this._setOptions(opts);
-			options.radius = this.options.radius = center.x - options.thickness;
-			
-			// build base arc
-			var path = this._buildMainArc(center.x,center.y,options.radius,options.angle);	
-			var pathElement = this._createPathDOMElement(path,options.baseColor);
-			this._bindPathClickFunction(pathElement);
 			
 			var svgElement = this._createSVGDOMElement(this._width, this._height);
+			container.appendChild(svgElement);						
 			
-			svgElement.appendChild(pathElement);
-			container.appendChild(svgElement);
+			this._draw();			
+
+			// Check for all browsers
+		    this._container.addEventListener('webkitTransitionEnd', draw, true);
+		    this._container.addEventListener('MSTransitionEnd', draw, true);
+		    this._container.addEventListener('oTransitionEnd', draw, true);
+		    this._container.addEventListener('transitionend', draw, true);
 		}		
 		
 	};
