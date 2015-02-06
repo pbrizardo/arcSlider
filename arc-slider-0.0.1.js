@@ -195,8 +195,8 @@
 			// for some reason, the atan2 function produces negative angles.
 			if (angle < 0) angle = 360 + angle;				
 
-			if (this._subPathElement) {
-				var path = this._subPath = this._buildFillArc(center.x, center.y, this.options.radius, this._startAngle, angle);
+			var path = this._subPath = this._buildFillArc(center.x, center.y, this.options.radius, this._startAngle, angle);
+			if (this._subPathElement) {				
 				this._subPathElement.setAttribute('d',path);
 			} else {
 				var traceElement = this._subPathElement = this._createPathDOMElement(path,this.options.traceColor,true);
