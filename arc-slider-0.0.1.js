@@ -18,7 +18,7 @@
 		options: {
 			max: 100,
 			min: 0,
-			step: 1,
+			//step: 1,
 			value: 0,
 			values: null,
 			angle:180,
@@ -30,7 +30,7 @@
 			traceColor:"#000000",
 			
 			// callbacks
-			change: null,
+			//change: null,
 			slide: null,
 			start: null,
 			stop: null
@@ -136,16 +136,6 @@
 			return this.options;
 		},
 
-		_getCenter : function() {
-			// var width = this._container.innerWidth || this._container.clientWidth;
-			// var height = this._container.innerHeight || this._container.clientHeight;
-			// var w = height < width ? height : width;
-			// w = w/2;
-			// return {x:w, y:w};
-
-			return this._center;
-		},
-
 		_draw : function() {
 			
 			// build base arc
@@ -190,7 +180,7 @@
 
 		_displayFillArc : function(e) {
 
-			var center = this._getCenter();			
+			var center = this._center;			
 			var uupos = this._container.childNodes[0].createSVGPoint();
 				uupos.x = e.clientX;
 		        uupos.y = e.clientY;
@@ -222,6 +212,10 @@
 				this._shim.style.left = e.pageX - offset;
 
 				this._displayFillArc(e);
+
+				if (typeof this.options.slide === 'function') {
+					this.options.slide();
+				}
 			}
 		},
 
@@ -233,6 +227,10 @@
 			this._shim.style.top  = e.clientY - offset;
 			this._shim.style.left = e.clientX - offset;
 
+			if (typeof this.options.start === 'function') {
+					this.options.start();
+			}
+
 			document.addEventListener('mousemove',function(e) {
 				_self._onMouseMoveEvent.call(_self,e);
 			}, false);
@@ -243,6 +241,9 @@
 			e.preventDefault();
 			if (this._ismousedown) {
 				this._displayFillArc(e);
+				if (typeof this.options.stop === 'function') {
+					this.options.stop();
+				}
 			}
 			this._ismousedown = false;	
 			document.removeEventListener('mousemove');	
@@ -290,6 +291,8 @@
 
 			// store base path globally
 			this._basePath = this._buildMainArc(center.x,center.y,this.options.radius,this.options.angle);
+
+			// TODO: Draw subpath if value is provided
 
 			this._draw();		
 			this._buildShim();	
