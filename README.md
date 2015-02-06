@@ -27,6 +27,7 @@ arcSlider(slider, options);
 ###Options (w/example values)
 Note: Credits to jQuery slider, I used their options as a base.
 
+```sh
 max: 100
 min: 0
 value: 0
@@ -42,3 +43,4 @@ traceColor:"#000000"
 slide: null <-- function objects, duh
 start: null
 stop: null
+```
