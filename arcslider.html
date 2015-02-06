@@ -6,14 +6,37 @@
 	height:600px;
 }
 
+#value {
+	position:absolute;
+	top:185px;
+	left:280px;
+	z-index:3;
+	font-size:23px;
+	color:#000099;
+	font-family: Arial;
+}
+
 @media screen and (max-width:1000px) {
 	#arcSlider {
 		width:400px;
 		height:400px;
 	}
+
+	#value {
+		top: 114px;
+		left: 183px;
+		font-size:23px;
+	}
 }
 
 @media screen and (max-width:700px) {
+
+	#value {
+		top: 90px;
+		left: 141px;
+		font-size:16;
+	}
+	
 	#arcSlider {
 		width:300px;
 		height:300px;
@@ -21,17 +44,20 @@
 }
 
 @media screen and (max-width:500px) {
+
+	#value {
+		top: 32px;
+		left: 50px;
+		font-size:8;
+	}
+	
 	#arcSlider {
 		width:100px;
 		height:100px;
 	}
 }
 
-#value {
-	position:absolute;
-	top:300px;
-	z-index:3;
-}
+
 
 </style>
 </head>
