@@ -5,11 +5,11 @@ No jQuery needed.
 Slider only slides. Need to implement the values system.
 
 ###To use
+```sh
 // get element
 var slider = document.getElementById('arcSlider');
-<br />
+
 // set options
-<br />
 var options = {
 	thickness:50,
 	angle:120,
@@ -19,10 +19,10 @@ var options = {
 	height:500,
 	radius:200
 };
-<br />
+
 // display!!!!!
-<br/>
 arcSlider(slider, options);
+```
 
 ###Options (w/example values)
 Note: Credits to jQuery slider, I used their options as a base.
