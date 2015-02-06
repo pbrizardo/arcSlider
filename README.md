@@ -8,19 +8,21 @@ To use
 ================================
 // get element
 var slider = document.getElementById('arcSlider');
-
+<br />
 // set options
-	var options = {
-		thickness:50,
-		angle:120,
-		baseColor:"blue",
-		traceColor:'red',
-		width:500,
-		height:500,
-		radius:200
-	};
-
+<br />
+var options = {
+	thickness:50,
+	angle:120,
+	baseColor:"blue",
+	traceColor:'red',
+	width:500,
+	height:500,
+	radius:200
+};
+<br />
 // display!!!!!
+<br/>
 arcSlider(slider, options);
 
 ================================
