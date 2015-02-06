@@ -7,7 +7,7 @@
 * History
 * --------------------------------------------------------------
 * 2015-02-03 [PRiz] Created
-*
+* 2015-02-06 [PRiz] Added values implementation. Can only step by 1.
 *
 */
 
@@ -139,8 +139,9 @@
 		_draw : function() {
 			
 			// build base arc
-			var pathElement = this._createPathDOMElement(this._basePath,this.options.baseColor);
+			var pathElement = this._basePathElement = this._createPathDOMElement(this._basePath,this.options.baseColor);
 			this._bindPathClickFunction(pathElement);
+
 			if (this._subPath) {
 				var traceElement = this._createPathDOMElement(this._subPath,this.options.traceColor);
 				this._bindPathClickFunction(traceElement);
@@ -194,12 +195,28 @@
 			// for some reason, the atan2 function produces negative angles.
 			if (angle < 0) angle = 360 + angle;				
 
-			var path = this._buildFillArc(center.x, center.y, this.options.radius, this._startAngle, angle);
-			if (this._subpath) this._subpath.parentNode.removeChild(this._subpath);					
-			var traceElement = this._subpath = this._createPathDOMElement(path,this.options.traceColor,true);
-			this._bindPathClickFunction(traceElement);				
+			if (this._subPathElement) {
+				var path = this._subPath = this._buildFillArc(center.x, center.y, this.options.radius, this._startAngle, angle);
+				this._subPathElement.setAttribute('d',path);
+			} else {
+				var traceElement = this._subPathElement = this._createPathDOMElement(path,this.options.traceColor,true);
+				this._bindPathClickFunction(traceElement);							
+				this._container.childNodes[0].appendChild(traceElement);
+			}
+
+			console.log(angle);
+		},
+
+		_setValue : function() {
+			var pathLength = this._basePathElement.getTotalLength();
+			var traceLength = (this._subPathElement) ? this._subPathElement.getTotalLength() : 0;
+
+			var pathRatio = traceLength/pathLength;
 			
-			this._container.childNodes[0].appendChild(traceElement);
+			var totalTicks = (this.options.values) ? this.options.values.length - 1 : this.options.max - this.options.min;
+			var subTicks = Math.floor(totalTicks * pathRatio);
+
+			this.options.value = (this.options.values) ? this.options.values[subTicks] : this.options.min + subTicks;
 		},
 		
 		/*
@@ -212,9 +229,10 @@
 				this._shim.style.left = e.pageX - offset;
 
 				this._displayFillArc(e);
+				this._setValue();
 
 				if (typeof this.options.slide === 'function') {
-					this.options.slide();
+					this.options.slide(this.options,e);
 				}
 			}
 		},
@@ -227,8 +245,11 @@
 			this._shim.style.top  = e.clientY - offset;
 			this._shim.style.left = e.clientX - offset;
 
+			this._displayFillArc(e);
+			this._setValue();
+
 			if (typeof this.options.start === 'function') {
-					this.options.start();
+					this.options.start(this.options,e);
 			}
 
 			document.addEventListener('mousemove',function(e) {
@@ -241,8 +262,9 @@
 			e.preventDefault();
 			if (this._ismousedown) {
 				this._displayFillArc(e);
+				this._setValue();
 				if (typeof this.options.stop === 'function') {
-					this.options.stop();
+					this.options.stop(this.options,e);
 				}
 			}
 			this._ismousedown = false;	
