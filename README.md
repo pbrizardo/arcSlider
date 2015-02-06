@@ -1,6 +1,7 @@
 # arcSlider
 
 No jQuery needed.
+<br />
 Slider only slides. Need to implement the values system.
 
 ================================
