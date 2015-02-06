@@ -2,23 +2,69 @@
 <head>
 <style>
 #arcSlider {
-	width:300px;
-	height:300px;
+	width:600px;
+	height:600px;
 }
+
+@media screen and (max-width:1000px) {
+	#arcSlider {
+		width:400px;
+		height:400px;
+	}
+}
+
+@media screen and (max-width:700px) {
+	#arcSlider {
+		width:300px;
+		height:300px;
+	}
+}
+
+@media screen and (max-width:500px) {
+	#arcSlider {
+		width:100px;
+		height:100px;
+	}
+}
+
+#value {
+	position:absolute;
+	top:300px;
+	z-index:3;
+}
+
 </style>
 </head>
 <body>
 
 <div id="arcSlider"></div>
+<div id="value">Value</div>
 
 <script src="arc-slider-0.0.1.js"></script>
 <script>
 
 	var slider = document.getElementById('arcSlider');
 	var options = {
-		thickness:16,
-		angle:225,
-		baseColor:"blue"
+		thickness:50,
+		angle:120,
+		baseColor:"blue",
+		traceColor:'#3399EE',
+		width:500,
+		height:500,
+		radius:200,
+		values: ['hello','world','for','i','am','a','beast'],
+		stop:function(obj,e) {
+			var val = document.getElementById('value');
+			val.innerHTML = obj.value;
+		},
+		start:function(obj,e) {
+			var val = document.getElementById('value');
+			val.innerHTML = obj.value;
+		},
+		slide:function(obj,e) {
+			var val = document.getElementById('value');
+			val.innerHTML = obj.value;
+		},
 	};
 
 	arcSlider(slider, options);
