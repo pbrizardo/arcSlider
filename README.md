@@ -27,18 +27,18 @@ arcSlider(slider, options);
 ###Options (w/example values)
 Note: Credits to jQuery slider, I used their options as a base.
 
-max: 100,
-min: 0,
-value: 0,
-values: null, <-- I believe array of values, hrmmmm
-angle:180,
-radius:100,
-thickness:5,
-width:250,
-height:250,
-baseColor:"#000000",
-traceColor:"#000000",
+max: 100
+min: 0
+value: 0
+values: null <-- I believe array of values, hrmmmm
+angle:180
+radius:100
+thickness:5
+width:250
+height:250
+baseColor:"#000000"
+traceColor:"#000000"
 
-slide: null, <-- function objects, duh
-start: null,
+slide: null <-- function objects, duh
+start: null
 stop: null
