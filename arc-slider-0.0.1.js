@@ -224,6 +224,7 @@
 		*/
 		_onMouseMoveEvent : function(e) {		
 			if (this._ismousedown) {
+				this._hasMoved = true;
 				var offset = this._shim.clientWidth/2
 				this._shim.style.top  = e.pageY - offset;
 				this._shim.style.left = e.pageX - offset;
@@ -260,7 +261,7 @@
 
 		_onMouseUpEvent : function(e) {
 			e.preventDefault();
-			if (this._ismousedown) {
+			if (this._ismousedown && this._hasMoved) {
 				this._displayFillArc(e);
 				this._setValue();
 				if (typeof this.options.stop === 'function') {
