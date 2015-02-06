@@ -4,9 +4,7 @@ No jQuery needed.
 <br />
 Slider only slides. Need to implement the values system.
 
-================================
-To use
-================================
+###To use
 // get element
 var slider = document.getElementById('arcSlider');
 <br />
@@ -26,9 +24,7 @@ var options = {
 <br/>
 arcSlider(slider, options);
 
-================================
-Options (w/example values)
-================================
+###Options (w/example values)
 Note: Credits to jQuery slider, I used their options as a base.
 
 max: 100,
