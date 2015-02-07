@@ -5,6 +5,9 @@ No jQuery needed.
 
 - [Demo](http://plnkr.co/edit/8YuFfEJRMVLeyMKvtcTC?p=preview)
 
+###TODO
+Deal with multiple sliders :(
+
 ###To use
 ```sh
 // get element
