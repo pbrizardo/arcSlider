@@ -13,7 +13,7 @@ var slider = document.getElementById('arcSlider');
 var options = {
 	thickness:50,
 	angle:120,
-	baseColor:"blue",
+	baseColor:'blue',
 	traceColor:'red',
 	width:500,
 	height:500,
