@@ -102,7 +102,6 @@
 		_createSVGDOMElement : function(width, height) {
 			var element = document.createElementNS(this._namespace,"svg");
 			element.setAttribute("viewBox","0 0 " + width + " " + height);
-			//element.setAttribute("preserveAspectRatio", "xMinYMin meet");
 			return element;
 		},
 		
@@ -164,7 +163,6 @@
 			element.style.height = element.style.width = this.options.thickness;
 			element.style.position = 'absolute';
 			element.style.zIndex = '300';
-			//element.style.backgroundColor = "#000000";			
 			this._container.appendChild(element);
 
 			
@@ -174,10 +172,7 @@
 			element.addEventListener('mouseup', function(e) {
 				_self._onMouseUpEvent.call(_self,e);
 			}, false);		
-			// element.addEventListener('mousemove', function(e) {
-			// 	e.preventDefault();
-			// 	_self._onMouseMoveEvent.call(_self,e);		
-			// }, false);
+		
 		},
 
 		_displayFillArc : function(e) {
@@ -205,7 +200,6 @@
 				this._container.childNodes[0].appendChild(traceElement);
 			}
 
-			console.log(angle);
 		},
 
 		_setValue : function() {
@@ -360,9 +354,7 @@
 
 						_self._setValue();
 					}					
-					//pal = _self._polarToCartesian()
-					//_self._displayFillArc({clientX:pal.x, clientY:pal.y});
-					//_self._setValue();
+
 				},
 				getValue : function() {
 					return _self.options.value;
