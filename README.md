@@ -4,6 +4,8 @@ No jQuery needed.
 <br />
 Slider only slides. Need to implement the values system.
 
+- [Demo](http://plnkr.co/edit/8YuFfEJRMVLeyMKvtcTC?p=preview)
+
 ###To use
 ```sh
 // get element
