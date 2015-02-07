@@ -163,6 +163,7 @@
 			var element = this._shim = document.createElement('div');
 			element.style.height = element.style.width = this.options.thickness;
 			element.style.position = 'absolute';
+			element.style.zIndex = '300';
 			//element.style.backgroundColor = "#000000";			
 			this._container.appendChild(element);
 
@@ -214,16 +215,25 @@
 			var pathRatio = traceLength/pathLength;
 			
 			var totalTicks = (this.options.values) ? this.options.values.length - 1 : this.options.max - this.options.min;
-			var subTicks = Math.floor(totalTicks * pathRatio);
+			var floorTick = Math.floor(totalTicks * pathRatio);
+			var ceilingTick = Math.ceil(totalTicks * pathRatio);			
 
-			this.options.value = (this.options.values) ? this.options.values[subTicks] : this.options.min + subTicks;
+			var subTick = (Math.abs((ceilingTick/totalTicks) - pathRatio) < Math.abs((floorTick/totalTicks) - pathRatio)) ? ceilingTick : floorTick;			
+
+			this.options.value = (this.options.values) ? this.options.values[subTick] : this.options.min + subTick;
 		},
 		
 		/*
 		* Event functions
 		*/
 		_onMouseMoveEvent : function(e) {		
-			if (this._ismousedown) {
+			if (this._ismousedown &&
+				this._clientX != e.clientX &&
+				this._clientY != e.clientY
+				) {
+
+				this._clientX = e.clientX;
+				this._clientY = e.clientY;
 				this._hasMoved = true;
 				var offset = this._shim.clientWidth/2
 				this._shim.style.top  = e.pageY - offset;
@@ -240,27 +250,32 @@
 
 		_onMouseDownEvent : function(e) {
 			var _self = this;	
-			e.preventDefault();		
-			this._ismousedown = true;			
-			var offset = this._shim.clientWidth/2;
-			this._shim.style.top  = e.clientY - offset;
-			this._shim.style.left = e.clientX - offset;
+					
+			if (!this._ismousedown)	{	
 
-			this._displayFillArc(e);
-			this._setValue();
+				this._clientX = e.clientX;
+				this._clientY = e.clientY;
 
-			if (typeof this.options.start === 'function') {
-					this.options.start(this.options,e);
+				var offset = this._shim.clientWidth/2;
+				this._shim.style.top  = e.clientY - offset;
+				this._shim.style.left = e.clientX - offset;
+
+				this._displayFillArc(e);
+				this._setValue();
+
+				if (typeof this.options.start === 'function') {
+						this.options.start(this.options,e);
+				}
 			}
+
+			this._ismousedown = true;
 
 			document.addEventListener('mousemove',function(e) {
 				_self._onMouseMoveEvent.call(_self,e);
 			}, false);
-	
 		},
 
 		_onMouseUpEvent : function(e) {
-			e.preventDefault();
 			if (this._ismousedown && this._hasMoved) {
 				this._displayFillArc(e);
 				this._setValue();
@@ -319,13 +334,47 @@
 
 			this._draw();		
 			this._buildShim();	
-		}		
-		
+
+			var _self = this;
+			return {
+				setValue : function(tick) {
+					if (tick 
+						&& ((_self.options.values && tick >= 0 && tick < _self.options.values.length)
+						    || (!_self.options.values && tick >= _self.options.min && tick <= _self.options.max))) {					
+
+						var ratio = tick/((_self.options.values) ? (_self.options.values.length - 1) : (_self.options.max - _self.options.min) );
+						var subLength = _self._basePathElement.getTotalLength()*ratio;
+						var subAngle = (subLength * 360)/(2*Math.PI*_self.options.radius);
+
+						var endAngle = _self._startAngle + subAngle;
+						if (endAngle > 360) endAngle = endAngle - 360;
+						
+						var path = _self._subPath = _self._buildFillArc(_self._center.x,_self._center.y,_self.options.radius,_self._startAngle,endAngle);
+						if (_self._subPathElement) {				
+							_self._subPathElement.setAttribute('d',path);
+						} else {
+							var traceElement = _self._subPathElement = _self._createPathDOMElement(path,_self.options.traceColor,true);
+							_self._bindPathClickFunction(traceElement);							
+							_self._container.childNodes[0].appendChild(traceElement);
+						}
+
+						_self._setValue();
+					}					
+					//pal = _self._polarToCartesian()
+					//_self._displayFillArc({clientX:pal.x, clientY:pal.y});
+					//_self._setValue();
+				},
+				getValue : function() {
+					return _self.options.value;
+				}
+			};	
+		}			
 	};
 	
 	window.arcSlider = function(obj,opts) {
 		// apply this keyword to arcSlider object instead of window object
-		arcSlider.init.call(arcSlider,obj,opts);
+		var returnObj = arcSlider.init.call(arcSlider,obj,opts);
+		return returnObj;
 	};
 	
 })(window);
