@@ -16,6 +16,11 @@
 	font-family: Arial;
 }
 
+#input-container {
+	position:absolute;
+	top:300px;
+}
+
 @media screen and (max-width:1000px) {
 	#arcSlider {
 		width:400px;
@@ -65,6 +70,10 @@
 
 <div id="arcSlider"></div>
 <div id="value">Value</div>
+<div id="input-container">
+<input id="txtValue" type="text" />
+<input type="button" value="Set Value" onclick="setValue()"/>
+</div>
 
 <script src="arc-slider-0.0.1.js"></script>
 <script>
@@ -93,7 +102,13 @@
 		},
 	};
 
-	arcSlider(slider, options);
+	var slider = arcSlider(slider, options);
+
+	function setValue() {
+		slider.setValue(parseInt(document.getElementById('txtValue').value));
+		var val = document.getElementById('value');
+		val.innerHTML = slider.getValue();
+	};
 
 </script>
 
