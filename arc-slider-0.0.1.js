@@ -338,7 +338,7 @@
 			var _self = this;
 			return {
 				setValue : function(tick) {
-					if (tick 
+					if ((tick != null || typeof tick != 'undefined')  
 						&& ((_self.options.values && tick >= 0 && tick < _self.options.values.length)
 						    || (!_self.options.values && tick >= _self.options.min && tick <= _self.options.max))) {					
 
