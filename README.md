@@ -3,6 +3,8 @@
 No jQuery needed.
 <br />
 
+- [Demo](http://plnkr.co/edit/8YuFfEJRMVLeyMKvtcTC?p=preview)
+
 ###To use
 ```sh
 // get element
