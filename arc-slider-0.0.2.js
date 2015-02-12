@@ -318,7 +318,8 @@
 
 				// calc center
 				var smallestLength = width < height ? width : height;
-				var c = smallestLength/2;
+				var c = options.radius + options.thickness;
+				//var c = smallestLength/2;
 				var center = this._center = {x:c,y:c};
 				
 				// create <svg> tag and append to container element
