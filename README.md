@@ -1,12 +1,12 @@
 # arcSlider
 
-No jQuery needed.
+A pure javascript library that utilizes SVG functions to make a responsive widget.
 <br />
 
 - [Demo](http://plnkr.co/edit/v3t0XIE1EIst0qHWIXeD?p=preview)
 
 ###TODO
-
+Add flag to fix the size instead of having a responsive behavior.
 
 ###To use
 ```sh
