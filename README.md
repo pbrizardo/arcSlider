@@ -1,12 +1,18 @@
 # arcSlider
 
-No jQuery needed.
+A pure javascript library that utilizes SVG functions to make a responsive widget.
+The arc is customizable by degrees (eg. 220 degress will create a horseshoe like arc that opens downwards)
+
 <br />
 
-- [Demo](http://plnkr.co/edit/8YuFfEJRMVLeyMKvtcTC?p=preview)
+- [Demo](http://plnkr.co/edit/v3t0XIE1EIst0qHWIXeD?p=preview)
 
 ###TODO
-Deal with multiple sliders :(
+Add flag to remove responsive behavior.
+
+Add cursor
+
+Add ability to change arc position (eg. vertical)
 
 ###To use
 ```sh
@@ -25,7 +31,7 @@ var options = {
 };
 
 // display!!!!!
-arcSlider(slider, options);
+var arc = arcSlider(slider, options);
 ```
 
 ###Options (w/example values)
@@ -48,3 +54,7 @@ slide: null <-- function objects, duh
 start: null
 stop: null
 ```
+###API
+setValue(number) : sets the current value by either the min/max range or a valid index of the values array.
+
+getValue(): gets current value (or actual value (not index) in the values array)
