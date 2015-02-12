@@ -9,8 +9,12 @@ The arc is customizable by degrees (eg. 220 degress will create a horseshoe like
 
 ###TODO
 Add flag to remove responsive behavior.
+
 Add cursor
+
 Add ability to change arc position (eg. vertical)
+
+Be able to crop canvas around the slider
 
 ###To use
 ```sh
