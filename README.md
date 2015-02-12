@@ -6,7 +6,7 @@ A pure javascript library that utilizes SVG functions to make a responsive widge
 - [Demo](http://plnkr.co/edit/v3t0XIE1EIst0qHWIXeD?p=preview)
 
 ###TODO
-Add flag to fix the size instead of having a responsive behavior.
+Add flag to remove responsive behavior.
 
 ###To use
 ```sh
