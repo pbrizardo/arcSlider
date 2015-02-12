@@ -14,6 +14,8 @@ Add cursor
 
 Add ability to change arc position (eg. vertical)
 
+Snap to values
+
 ###To use
 ```sh
 // get element
