@@ -43,7 +43,7 @@ Note: Credits to jQuery slider, I used their options as a base.
 max: 100
 min: 0
 value: 0
-values: null <-- I believe array of values, hrmmmm
+values: [2,3,'hi','all] (takes precedence over min and max value)
 angle:180
 radius:100
 thickness:5
@@ -52,7 +52,7 @@ height:250
 baseColor:"#000000"
 traceColor:"#000000"
 
-slide: null <-- function objects, duh
+slide: function() { ... }
 start: null
 stop: null
 ```
