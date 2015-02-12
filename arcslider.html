@@ -74,8 +74,9 @@
 <input id="txtValue" type="text" />
 <input type="button" value="Set Value" onclick="setValue()"/>
 </div>
+<div id="slider2"></div>
 
-<script src="arc-slider-0.0.1.js"></script>
+<script src="arc-slider-0.0.2.js"></script>
 <script>
 
 	var slider = document.getElementById('arcSlider');
@@ -103,7 +104,10 @@
 	};
 
 	var slider = arcSlider(slider, options);
-
+	var slider2 = arcSlider(document.getElementById('slider2'),{baseColor:'blue'});
+	
+	
+	
 	function setValue() {
 		slider.setValue(parseInt(document.getElementById('txtValue').value));
 		var val = document.getElementById('value');
