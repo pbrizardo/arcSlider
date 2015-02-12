@@ -34,6 +34,9 @@ var options = {
 
 // display!!!!!
 var arc = arcSlider(slider, options);
+
+// get value of arc
+alert(arc.getValue());
 ```
 
 ###Options (w/example values)
