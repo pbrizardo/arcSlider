@@ -54,4 +54,5 @@ stop: null
 ```
 ###API
 setValue(number) : sets the current value by either the min/max range or a valid index of the values array.
+
 getValue(): gets current value (or actual value (not index) in the values array)
