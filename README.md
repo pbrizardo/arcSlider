@@ -14,8 +14,6 @@ Add cursor
 
 Add ability to change arc position (eg. vertical)
 
-Be able to crop canvas around the slider
-
 ###To use
 ```sh
 // get element
