@@ -3,10 +3,10 @@
 No jQuery needed.
 <br />
 
-- [Demo](http://plnkr.co/edit/8YuFfEJRMVLeyMKvtcTC?p=preview)
+- [Demo](http://plnkr.co/edit/v3t0XIE1EIst0qHWIXeD?p=preview)
 
 ###TODO
-Deal with multiple sliders :(
+
 
 ###To use
 ```sh
