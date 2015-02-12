@@ -43,7 +43,7 @@ Note: Credits to jQuery slider, I used their options as a base.
 max: 100
 min: 0
 value: 0
-values: [2,3,'hi','all] (takes precedence over min and max value)
+values: [2,3,'hi','all'] (takes precedence over min and max value)
 angle:180
 radius:100
 thickness:5
