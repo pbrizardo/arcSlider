@@ -13,6 +13,8 @@ Add ability to change arc position (eg. vertical)
 
 Snap to values
 
+Add touch events
+
 ###To use
 ```sh
 // get element
