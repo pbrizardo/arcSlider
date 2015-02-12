@@ -1,9 +1,6 @@
 # arcSlider
 
 A pure javascript library that utilizes SVG functions to make a responsive widget.
-The arc is customizable by degrees (eg. 220 degress will create a horseshoe like arc that opens downwards)
-
-<br />
 
 - [Demo](http://plnkr.co/edit/v3t0XIE1EIst0qHWIXeD?p=preview)
 
